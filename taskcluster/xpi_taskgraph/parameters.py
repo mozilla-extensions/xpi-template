@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import six
 from six import text_type
 from taskgraph.parameters import extend_parameters_schema
 from voluptuous import Required
@@ -20,9 +21,15 @@ extend_parameters_schema({
 })
 
 
+def to_unicode(obj):
+    if six.PY3 and isinstance(obj, six.binary_type):
+        obj = obj.decode('utf-8')
+    return obj
+
+
 def get_decision_parameters(graph_config, parameters):
-    parameters["template_base_repository"] = os.environ.get("TEMPLATE_BASE_REPOSITORY", "")
-    parameters["template_head_repository"] = os.environ.get("TEMPLATE_HEAD_REPOSITORY", "")
-    parameters["template_head_ref"] = os.environ.get("TEMPLATE_HEAD_REF", "")
-    parameters["template_head_rev"] = os.environ.get("TEMPLATE_HEAD_REV", "")
-    parameters["template_repository_type"] = os.environ.get("TEMPLATE_REPOSITORY_TYPE", "")
+    parameters["template_base_repository"] = to_unicode(os.environ.get("TEMPLATE_BASE_REPOSITORY", ""))
+    parameters["template_head_repository"] = to_unicode(os.environ.get("TEMPLATE_HEAD_REPOSITORY", ""))
+    parameters["template_head_ref"] = to_unicode(os.environ.get("TEMPLATE_HEAD_REF", ""))
+    parameters["template_head_rev"] = to_unicode(os.environ.get("TEMPLATE_HEAD_REV", ""))
+    parameters["template_repository_type"] = to_unicode(os.environ.get("TEMPLATE_REPOSITORY_TYPE", ""))
