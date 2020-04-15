@@ -12,6 +12,8 @@ tasks:
               repo: https://github.com/escapewindow/xpi-template
               branch: shared-tc-dir
           trustDomain: xpi
+          # XXX Uncomment if this is a private repo
+          # githubCloneSecret: project/xpi/xpi-github-clone-ssh
       in:
           $if: 'tasks_for in ["github-pull-request", "github-push", "action", "cron"]'
           then:
@@ -187,6 +189,7 @@ tasks:
                                     TASKGRAPH_REPOSITORY_TYPE: hg
                                     REPOSITORIES: {$json: {xpi: "XPI Manifest", taskgraph: "Taskgraph", template: "XPI Template"}}
                                     HG_STORE_PATH: /builds/worker/checkouts/hg-store
+                                    GITHUB_CLONE_SECRET: '${githubCloneSecret}'
                                   - $if: 'tasks_for in ["github-pull-request"]'
                                     then:
                                         XPI_PULL_REQUEST_NUMBER: '${event.pull_request.number}'
