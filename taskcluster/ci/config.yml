@@ -10,6 +10,7 @@ taskgraph:
             name: "XPI source"
         template:
             name: "XPI template"
+            project-regex: 'xpi-template'
     decision-parameters: 'xpi_taskgraph.parameters:get_decision_parameters'
 
 workers:
