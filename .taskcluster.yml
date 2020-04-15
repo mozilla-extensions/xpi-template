@@ -15,8 +15,9 @@ tasks:
               repo: https://github.com/escapewindow/xpi-template
               branch: shared-tc-dir
           trustDomain: xpi
-          # XXX Uncomment if this is a private repo
+          # XXX for private repos, uncomment this line, and comment out the next
           # githubCloneSecret: project/xpi/xpi-github-clone-ssh
+          githubCloneSecret: ""
       in:
           $if: 'tasks_for in ["github-pull-request", "github-push", "action", "cron"]'
           then:
