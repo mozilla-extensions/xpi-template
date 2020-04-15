@@ -12,4 +12,16 @@ def register(graph_config):
     Import all modules that are siblings of this one, triggering decorators in
     the process.
     """
-    pass
+    _import_modules([
+        "build",
+        "cached",
+        "env",
+        "parameters",
+        "test",
+        "xpi_manifest",
+    ])
+
+
+def _import_modules(modules):
+    for module in modules:
+        import_module(".{}".format(module), package=__name__)
