@@ -8,6 +8,7 @@ import os
 
 from six import text_type
 from taskgraph.parameters import extend_parameters_schema
+from voluptuous import Required
 
 
 extend_parameters_schema({
