@@ -8,6 +8,9 @@ taskgraph:
     repositories:
         xpi:
             name: "XPI source"
+        template:
+            name: "XPI template"
+    decision-parameters: 'xpi_taskgraph.parameters:get_decision_parameters'
 
 workers:
     aliases:
