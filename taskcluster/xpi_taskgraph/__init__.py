@@ -15,7 +15,6 @@ def register(graph_config):
     _import_modules([
         "build",
         "cached",
-        "parameters",
         "test",
         "xpi_manifest",
     ])
