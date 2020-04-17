@@ -6,6 +6,9 @@ task-priority: lowest
 taskgraph:
     register: xpi_taskgraph:register
     repositories:
+        xpi:
+            name: "XPI source"
+            project-regex: '(?!xpi-template)'
         template:
             name: "XPI template"
             project-regex: 'xpi-template'
