@@ -19,6 +19,10 @@ job-defaults:
         docker-image:
             indexed: xpi.cache.level-3.docker-images.v2.node-latest.latest
     run:
+        checkout:
+            template: {}
+            xpi:
+                path: xpi
         use-caches: false
 
 jobs:
