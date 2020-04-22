@@ -18,6 +18,7 @@ taskgraph:
             default-repository: https://github.com/escapewindow/xpi-template
             default-ref: shared-tc-dir
             type: git
+    decision-parameters: 'xpi_taskgraph.parameters:get_decision_parameters'
 
 workers:
     aliases:
