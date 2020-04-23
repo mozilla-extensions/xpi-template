@@ -229,16 +229,14 @@ tasks:
                                     then: >
                                         PIP_IGNORE_INSTALLED=0 pip install --user /builds/worker/checkouts/taskgraph &&
                                         cd /builds/worker/checkouts/src &&
-                                        rm -rf taskcluster &&
-                                        ln -s /builds/worker/checkouts/template/taskcluster taskcluster &&
                                         ln -s /builds/worker/artifacts artifacts &&
                                         ~/.local/bin/taskgraph action-callback
+                                        --root=/builds/worker/checkouts/taskgraph/taskcluster/ci
                                     else: >
                                         PIP_IGNORE_INSTALLED=0 pip install --user /builds/worker/checkouts/taskgraph &&
-                                        rm -rf taskcluster &&
-                                        ln -s /builds/worker/checkouts/template/taskcluster taskcluster &&
                                         ln -s /builds/worker/artifacts artifacts &&
                                         ~/.local/bin/taskgraph decision
+                                        --root=/builds/worker/checkouts/taskgraph/taskcluster/ci
                                         --pushlog-id='0'
                                         --pushdate='0'
                                         --project='${project}'
