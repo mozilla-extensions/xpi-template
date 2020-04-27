@@ -7,7 +7,7 @@ tasks:
     - $let:
           taskgraph:
               branch: taskgraph
-              revision: c78d65237c6ed064b9cbb3cd063b22e9e052a06a
+              revision: b34543ca2f42771117fa9da33c31994913587636
           template:
               repo: https://github.com/mozilla-extensions/xpi-template
               branch: master
