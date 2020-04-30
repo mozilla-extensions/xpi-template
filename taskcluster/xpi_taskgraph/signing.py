@@ -11,6 +11,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 
 from taskgraph.transforms.base import TransformSequence
+from taskgraph.util.taskcluster import get_artifact_prefix
 from taskgraph.util.schema import resolve_keyed_by
 from taskgraph.util.keyed_by import evaluate_keyed_by
 
@@ -55,7 +56,7 @@ def build_signing_task(config, tasks):
             continue
         dep = task["primary-dependency"]
         task["dependencies"] = {"build": dep.label}
-        artifact_prefix = dep.task["payload"]["env"]["ARTIFACT_PREFIX"]
+        artifact_prefix = get_artifact_prefix(dep.task)
         if not artifact_prefix.startswith("public"):
             scopes = task.setdefault('scopes', [])
             scopes.append(
