@@ -9,8 +9,11 @@ tasks:
               branch: taskgraph-try
               revision: 5af31e64fb97594e6064e87bbfb3ab0a5fade7ec
           template:
-              repo: https://github.com/mozilla-extensions/xpi-template
-              branch: master
+              #XXX uncomment to merge
+              #repo: https://github.com/mozilla-extensions/xpi-template
+              #branch: master
+              repo: https://github.com/escapewindow/xpi-template
+              branch: private-ci
           trustDomain: xpi
           # XXX for private repos, uncomment this line, and comment out the next
           # xpiSshSecretName: project/xpi/xpi-github-clone-ssh
