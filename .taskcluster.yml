@@ -6,15 +6,15 @@ policy:
 tasks:
     - $let:
           taskgraph:
-              branch: taskgraph
-              revision: c78d65237c6ed064b9cbb3cd063b22e9e052a06a
+              branch: taskgraph-try
+              revision: 5af31e64fb97594e6064e87bbfb3ab0a5fade7ec
           template:
               repo: https://github.com/mozilla-extensions/xpi-template
               branch: master
           trustDomain: xpi
           # XXX for private repos, uncomment this line, and comment out the next
-          # githubCloneSecret: project/xpi/xpi-github-clone-ssh
-          githubCloneSecret: ""
+          # xpiSshSecretName: project/xpi/xpi-github-clone-ssh
+          xpiSshSecretName: ""
           # XXX use "privileged" or "system" to enable signing
           xpiSigningType: ""
       in:
@@ -193,7 +193,7 @@ tasks:
                                     TASKGRAPH_REPOSITORY_TYPE: hg
                                     REPOSITORIES: {$json: {xpi: "XPI Manifest", taskgraph: "Taskgraph", template: "XPI Template"}}
                                     HG_STORE_PATH: /builds/worker/checkouts/hg-store
-                                    GITHUB_CLONE_SECRET: '${githubCloneSecret}'
+                                    XPI_SSH_SECRET_NAME: '${xpiSshSecretName}'
                                   - $if: 'tasks_for in ["github-pull-request"]'
                                     then:
                                         XPI_PULL_REQUEST_NUMBER: '${event.pull_request.number}'
