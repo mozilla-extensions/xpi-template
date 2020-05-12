@@ -6,8 +6,8 @@ policy:
 tasks:
     - $let:
           taskgraph:
-              branch: taskgraph-try
-              revision: 5af31e64fb97594e6064e87bbfb3ab0a5fade7ec
+              branch: taskgraph
+              revision: 7dde9ce7740068d7b73218976343a28fc99be847
           template:
               #XXX uncomment to merge
               #repo: https://github.com/mozilla-extensions/xpi-template
