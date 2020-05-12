@@ -24,71 +24,103 @@ tasks:
           $if: 'tasks_for in ["github-pull-request", "github-push", "action", "cron"]'
           then:
               $let:
-                  # Github events have this stuff in different places...
-                  ownerEmail:
-                      $if: 'tasks_for == "github-push"'
-                      then: '${event.pusher.email}'
-                      # Assume Pull Request
-                      else:
-                          $if: 'tasks_for == "github-pull-request"'
-                          then: '${event.pull_request.user.login}@users.noreply.github.com'
-                          else:
-                              $if: 'tasks_for in ["cron", "action"]'
-                              then: '${tasks_for}@noreply.mozilla.org'
-                  baseRepoUrl:
-                      $if: 'tasks_for == "github-push"'
-                      then: '${event.repository.html_url}'
-                      else:
-                          $if: 'tasks_for == "github-pull-request"'
-                          then: '${event.pull_request.base.repo.html_url}'
-                          else:
-                              $if: 'tasks_for in ["cron", "action"]'
-                              then: '${repository.url}'
-                  repoUrl:
-                      $if: 'tasks_for == "github-push"'
-                      then: '${event.repository.html_url}'
-                      else:
-                          $if: 'tasks_for == "github-pull-request"'
-                          then: '${event.pull_request.head.repo.html_url}'
-                          else:
-                              $if: 'tasks_for in ["cron", "action"]'
-                              then: '${repository.url}'
-                  project:
-                      $if: 'tasks_for == "github-push"'
-                      then: '${event.repository.name}'
-                      else:
-                          $if: 'tasks_for == "github-pull-request"'
-                          then: '${event.pull_request.head.repo.name}'
-                          else:
-                              $if: 'tasks_for in ["cron", "action"]'
-                              then: '${repository.project}'
-                  head_branch:
-                      $if: 'tasks_for == "github-pull-request"'
-                      then: ${event.pull_request.head.ref}
-                      else:
+                  $flatten:
+                      # Github events have this stuff in different places...
+                      ownerEmail:
                           $if: 'tasks_for == "github-push"'
-                          then: ${event.ref}
+                          then: '${event.pusher.email}'
+                          # Assume Pull Request
                           else:
-                              $if: 'tasks_for == "cron"'
-                              then: '${push.branch}'
+                              $if: 'tasks_for == "github-pull-request"'
+                              then: '${event.pull_request.user.login}@users.noreply.github.com'
                               else:
-                                  $if: 'tasks_for == "action"'
-                                  then: 'refs/heads/master'  # TODO fix
-                  head_sha:
-                      $if: 'tasks_for == "github-push"'
-                      then: '${event.after}'
-                      else:
+                                  $if: 'tasks_for in ["cron", "action"]'
+                                  then: '${tasks_for}@noreply.mozilla.org'
+                      project:
+                          $if: 'tasks_for == "github-push"'
+                          then: '${event.repository.name}'
+                          else:
+                              $if: 'tasks_for == "github-pull-request"'
+                              then: '${event.pull_request.head.repo.name}'
+                              else:
+                                  $if: 'tasks_for in ["cron", "action"]'
+                                  then: '${repository.project}'
+                      head_branch:
                           $if: 'tasks_for == "github-pull-request"'
-                          then: '${event.pull_request.head.sha}'
+                          then: ${event.pull_request.head.ref}
+                          else:
+                              $if: 'tasks_for == "github-push"'
+                              then: ${event.ref}
+                              else:
+                                  $if: 'tasks_for == "cron"'
+                                  then: '${push.branch}'
+                                  else:
+                                      $if: 'tasks_for == "action"'
+                                      then: 'refs/heads/master'  # TODO fix
+                      head_sha:
+                          $if: 'tasks_for == "github-push"'
+                          then: '${event.after}'
+                          else:
+                              $if: 'tasks_for == "github-pull-request"'
+                              then: '${event.pull_request.head.sha}'
+                              else:
+                                  $if: 'tasks_for in ["cron", "action"]'
+                                  then: '${push.revision}'
+                      ownTaskId:
+                          $if: '"github" in tasks_for'
+                          then: {$eval: as_slugid("decision_task")}
                           else:
                               $if: 'tasks_for in ["cron", "action"]'
-                              then: '${push.revision}'
-                  ownTaskId:
-                      $if: '"github" in tasks_for'
-                      then: {$eval: as_slugid("decision_task")}
+                              then: '${ownTaskId}'
+                      repoFullName:
+                          $if: 'tasks_for in "github-push"'
+                          then: '${event.repository.full_name}'
+                          else:
+                              $if: 'tasks_for == "github-pull-request"'
+                              then: '${event.pull_request.base.repo.full_name}'
+                              else:
+                                  $if: 'tasks_for in ["cron", "action"]'
+                                  # Trim https://github.com/
+                                  then: '${repository.url[19:]}'
+                      $if: '${xpiSshSecretName} == ""'  # public repo
+                      then:
+                          baseRepoUrl:
+                              $if: 'tasks_for == "github-push"'
+                              then: '${event.repository.html_url}'
+                              else:
+                                  $if: 'tasks_for == "github-pull-request"'
+                                  then: '${event.pull_request.base.repo.html_url}'
+                                  else:
+                                      $if: 'tasks_for in ["cron", "action"]'
+                                      then: '${repository.url}'
+                          repoUrl:
+                              $if: 'tasks_for == "github-push"'
+                              then: '${event.repository.html_url}'
+                              else:
+                                  $if: 'tasks_for == "github-pull-request"'
+                                  then: '${event.pull_request.head.repo.html_url}'
+                                  else:
+                                      $if: 'tasks_for in ["cron", "action"]'
+                                      then: '${repository.url}'
                       else:
-                          $if: 'tasks_for in ["cron", "action"]'
-                          then: '${ownTaskId}'
+                          baseRepoUrl:
+                              $if: 'tasks_for == "github-push"'
+                              then: '${event.repository.ssh_url}'
+                              else:
+                                  $if: 'tasks_for == "github-pull-request"'
+                                  then: '${event.pull_request.base.repo.ssh_url}'
+                                  else:
+                                      $if: 'tasks_for in ["cron", "action"]'
+                                      then: '${repository.url}'
+                          repoUrl:
+                              $if: 'tasks_for == "github-push"'
+                              then: '${event.repository.ssh_url}'
+                              else:
+                                  $if: 'tasks_for == "github-pull-request"'
+                                  then: '${event.pull_request.base.repo.ssh_url}'
+                                  else:
+                                      $if: 'tasks_for in ["cron", "action"]'
+                                      then: '${repository.url}'
               in:
                   $let:
                       level: 1
@@ -109,7 +141,7 @@ tasks:
                       metadata:
                           $merge:
                               - owner: "${ownerEmail}"
-                                source: '${repoUrl}/raw/${head_sha}/.taskcluster.yml'
+                                source: 'https://github.com/${repoUrl[15:-4]}/raw/${head_sha}/.taskcluster.yml'
                               - $if: 'tasks_for in ["github-push", "github-pull-request"]'
                                 then:
                                     name: "Decision Task"
@@ -156,19 +188,22 @@ tasks:
                                           then: {$eval: 'head_branch[11:]'}
                                           else: ${head_branch}
                               in:
-                                  - 'assume:repo:${repoUrl[8:]}:branch:${short_head_branch}'
+                                  - 'assume:repo:github.com/${repoFullName}:branch:${short_head_branch}'
+
 
                           else:
                               $if: 'tasks_for == "github-pull-request"'
                               then:
-                                  - 'assume:repo:github.com/${event.pull_request.base.repo.full_name}:pull-request'
+                                  - 'assume:repo:github.com/${repoFullName}:pull-request'
+
                               else:
                                   $if: 'tasks_for == "action"'
                                   then:
                                       # when all actions are hooks, we can calculate this directly rather than using a variable
                                       - '${action.repo_scope}'
                                   else:
-                                      - 'assume:repo:${repoUrl[8:]}:cron:${cron.job_name}'
+                                      - 'assume:repo:github.com/${repoFullName}:cron:${cron.job_name}'
+
 
                       requires: all-completed
                       priority: lowest
