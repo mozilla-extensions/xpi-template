@@ -5,19 +5,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-import re
-
-from six import text_type
-from taskgraph.parameters import extend_parameters_schema
-from voluptuous import All, Any, Optional, Range, Required
-
-
-extend_parameters_schema({
-    Required("pull_request_number"): Any(All(int, Range(min=1)), None),
-    Required("release_type"): text_type,
-    Optional("shipping_phase"): Any('build', 'ship', None),
-    Required("version"): text_type,
-})
 
 
 def get_decision_parameters(graph_config, parameters):
