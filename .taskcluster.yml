@@ -16,7 +16,7 @@ tasks:
               branch: private-ci
           trustDomain: xpi
           # XXX for private repos, uncomment this line, and comment out the next
-          # xpiSshSecretName: project/xpi/xpi-github-clone-ssh
+          #xpiSshSecretName: project/xpi/xpi-github-clone-ssh
           xpiSshSecretName: ""
           # XXX use "privileged" or "system" to enable signing
           xpiSigningType: ""
@@ -79,7 +79,7 @@ tasks:
                               # Trim https://github.com/
                               then: '${repository.url[19:]}'
                   baseRepoUrl:
-                      $if: '${xpiSshSecretName} == ""'  # public repo
+                      $if: '!xpiSshSecretName'  # public repo
                       then:
                           $if: 'tasks_for == "github-push"'
                           then: '${event.repository.html_url}'
@@ -99,7 +99,7 @@ tasks:
                                   $if: 'tasks_for in ["cron", "action"]'
                                   then: '${repository.url}'
                   repoUrl:
-                      $if: '${xpiSshSecretName} == ""'  # public repo
+                      $if: '!xpiSshSecretName'  # public repo
                       then:
                           $if: 'tasks_for == "github-push"'
                           then: '${event.repository.html_url}'
