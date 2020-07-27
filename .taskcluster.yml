@@ -15,7 +15,7 @@ tasks:
           # The below doesn't need changing on initial repo setup
           taskgraph:
               branch: taskgraph
-              revision: 7dde9ce7740068d7b73218976343a28fc99be847
+              revision: 8051b20c975711d4ce09537285cef7451d043d8b
           template:
               repo: https://github.com/mozilla-extensions/xpi-template
               branch: master
