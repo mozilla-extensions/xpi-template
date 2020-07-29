@@ -19,9 +19,11 @@ from taskgraph.util.keyed_by import evaluate_keyed_by
 transforms = TransformSequence()
 
 FORMATS = {
-    "privileged": "privileged_webextension",
-    "system": "system_addon",
+    "hosted-privileged": "privileged_webextension",
     "mozillaonline-privileged": "privileged_webextension",
+    "normandy-privileged": "privileged_webextension",
+    "system": "system_addon",
+    "privileged": "privileged_webextension",
 }
 
 
