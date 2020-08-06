@@ -8,7 +8,7 @@ tasks:
           # XXX Set to `true` for private repos
           privateRepo: false
           # Use `system` for system add-on,
-          # `hosted-privileged` for AMO or self-hosted privileged add-on,
+          # `privileged` for AMO or self-hosted privileged add-on,
           # `mozillaonline-privileged` for Mozilla China add-on,
           # `normandy-privileged` for normandy add-on.
           xpiSigningType: ""
