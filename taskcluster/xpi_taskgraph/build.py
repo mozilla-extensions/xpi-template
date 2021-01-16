@@ -37,7 +37,7 @@ def tasks_from_manifest(config, jobs):
             else:
                 artifact_prefix = "public/build"
             task.setdefault("attributes", {})
-            task["attributes"]["artifact-prefix"] = artifact_prefix
+            task["attributes"]["artifact_prefix"] = artifact_prefix
             env["ARTIFACT_PREFIX"] = artifact_prefix
             artifacts = task["worker"].setdefault("artifacts", [])
             artifacts.append(
