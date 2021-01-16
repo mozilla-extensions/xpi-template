@@ -32,8 +32,7 @@ def tasks_from_manifest(config, jobs):
             task["label"] = "build-{}".format(xpi_config["name"])
             env["XPI_NAME"] = xpi_config["name"]
             task.setdefault("extra", {})["xpi-name"] = xpi_config["name"]
-            if env.get("XPI_SSH_SECRET_NAME", ""):
-                checkout_config["ssh_secret_name"] = env["XPI_SSH_SECRET_NAME"]
+            if os.environ.get("XPI_SSH_SECRET_NAME"):
                 artifact_prefix = "xpi/build"
             else:
                 artifact_prefix = "public/build"
