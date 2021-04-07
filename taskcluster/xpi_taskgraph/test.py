@@ -41,6 +41,8 @@ def test_tasks_from_manifest(config, jobs):
                     run["cwd"] = "{checkout}"
                 run["command"] = run["command"].format(target=target)
                 task["label"] = "t-{}-{}".format(target, xpi_name)
+
+                task["worker"]["docker-image"]["indexed"] = xpi_config["docker-image"]
                 if os.environ.get("XPI_SSH_SECRET_NAME", ""):
                     artifact_prefix = "xpi/build"
                 else:

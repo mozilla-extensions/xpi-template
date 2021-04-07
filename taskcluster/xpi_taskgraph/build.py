@@ -47,6 +47,7 @@ def tasks_from_manifest(config, jobs):
                     "path": "/builds/worker/artifacts",
                 }
             )
+            task["worker"]["docker-image"]["indexed"] = xpi_config["docker-image"]
             if xpi_config.get("install-type"):
                 env["XPI_INSTALL_TYPE"] = xpi_config["install-type"]
 
