@@ -48,4 +48,6 @@ def test_tasks_from_manifest(config, jobs):
                 else:
                     artifact_prefix = "public/build"
                 env["ARTIFACT_PREFIX"] = artifact_prefix
+                if xpi_config.get("install-type"):
+                    env["XPI_INSTALL_TYPE"] = xpi_config["install-type"]
                 yield task
