@@ -6,7 +6,6 @@ Apply some defaults and minor modifications to the jobs defined in the build
 kind.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
@@ -56,16 +55,14 @@ def build_signing_task(config, tasks):
             continue
         dep = task["primary-dependency"]
         task["dependencies"] = {"build": dep.label}
-        artifact_prefix = dep.task["payload"]["env"]["ARTIFACT_PREFIX"].rstrip('/')
+        artifact_prefix = dep.task["payload"]["env"]["ARTIFACT_PREFIX"].rstrip("/")
         if not artifact_prefix.startswith("public"):
-            scopes = task.setdefault('scopes', [])
-            scopes.append(
-                "queue:get-artifact:{}/*".format(artifact_prefix)
-            )
+            scopes = task.setdefault("scopes", [])
+            scopes.append(f"queue:get-artifact:{artifact_prefix}/*")
         xpi_name = dep.task["extra"]["xpi-name"]
         # XXX until we can figure out what to sign, assume
         #     `{artifact_prefix}/{xpi_name}.xpi`
-        path = "{}/{}.xpi".format(artifact_prefix, xpi_name)
+        path = f"{artifact_prefix}/{xpi_name}.xpi"
         format = FORMATS[xpi_type]
         task["worker"]["upstream-artifacts"] = [
             {
@@ -81,4 +78,4 @@ def build_signing_task(config, tasks):
 
 
 def _get_dependent_job_name_without_its_kind(dependent_job):
-    return dependent_job.label[len(dependent_job.kind) + 1:]
+    return dependent_job.label[len(dependent_job.kind) + 1 :]

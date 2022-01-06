@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from __future__ import absolute_import, print_function, unicode_literals
 
 import hashlib
 import os
@@ -63,15 +62,14 @@ def build_cache(config, tasks):
                     files.update({path})
             h = hashlib.sha256()
             for path in sorted(list(files)):
-                h.update(
-                    "{} {}\n".format(
-                        hash_path(os.path.realpath(os.path.join(BASE_DIR, path))), path
-                    )
+                paths = "{} {}\n".format(
+                    hash_path(os.path.realpath(os.path.join(BASE_DIR, path))), path
                 )
+                h.update(paths.encode("UTF-8"))
             task.setdefault("attributes", {}).setdefault("cached_task", {})
             cache_name = task["label"].replace(":", "-")
             task["cache"] = {
-                "type": "{}.v2".format(repo_name),
+                "type": f"{repo_name}.v2",
                 "name": cache_name,
                 "digest-data": [h.hexdigest()],
             }
