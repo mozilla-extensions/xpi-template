@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from __future__ import absolute_import, print_function, unicode_literals
 
 from copy import deepcopy
 import json
@@ -51,7 +48,7 @@ def check_manifest(manifest_list):
             )
     if messages:
         raise Exception(
-            "Found the following issue with the package.json(s):\n{}".format(messages)
+            f"Found the following issue with the package.json(s):\n{messages}"
         )
 
 
@@ -78,10 +75,10 @@ def get_manifest():
                 manifest["install-type"] = "npm"
             else:
                 raise Exception(
-                    "Missing yarn.lock or package-lock.json in {}!".format(dir_name)
+                    f"Missing yarn.lock or package-lock.json in {dir_name}!"
                 )
             if dir_name != BASE_DIR:
-                manifest["directory"] = dir_name.replace("{}/".format(BASE_DIR), "")
+                manifest["directory"] = dir_name.replace(f"{BASE_DIR}/", "")
             with open(os.path.join(dir_name, "package.json")) as fh:
                 package_json = json.load(fh)
             for target in package_json.get("scripts", {}):

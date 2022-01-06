@@ -6,7 +6,6 @@ Apply some defaults and minor modifications to the jobs defined in the build
 kind.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
 from copy import deepcopy
 import json
 import os
@@ -40,7 +39,7 @@ def test_tasks_from_manifest(config, jobs):
                 else:
                     run["cwd"] = "{checkout}"
                 run["command"] = run["command"].format(target=target)
-                task["label"] = "t-{}-{}".format(target, xpi_name)
+                task["label"] = f"t-{target}-{xpi_name}"
 
                 task["worker"]["docker-image"]["indexed"] = xpi_config["docker-image"]
                 if os.environ.get("XPI_SSH_SECRET_NAME", ""):
