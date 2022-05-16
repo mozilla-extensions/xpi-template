@@ -20,6 +20,10 @@ transforms = TransformSequence()
 @transforms.add
 def run_addons_linter(config, tasks):
     for task in tasks:
+        # We only want to execute addons-linter on privileged extensions (for now).
+        if os.environ.get("XPI_SIGNING_TYPE") != "privileged":
+            continue
+
         dep = task.pop("primary-dependency")
 
         # Add a dependency to the build task because we want to lint the
