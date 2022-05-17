@@ -33,7 +33,7 @@ job-template:
         # This should be done by replacing `2` with `3` in the command below.
         command: >-
             curl -sSL --fail -o {xpi_file} "$XPI_URL" &&
-            npx -y addons-linter --boring --disable-xpi-autoclose --max-manifest-version=2 {xpi_file}
+            npx -y addons-linter --privileged --boring --disable-xpi-autoclose --max-manifest-version=2 {xpi_file}
 
     attributes:
         code-review: true
