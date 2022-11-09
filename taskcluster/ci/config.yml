@@ -23,7 +23,7 @@ workers:
             provisioner: xpi-{level}
             implementation: docker-worker
             os: linux
-            worker-type: 'b-linux'
+            worker-type: 'b-linux-gcp'
         dep-signing:
             provisioner: scriptworker-k8s
             implementation: scriptworker-signing
