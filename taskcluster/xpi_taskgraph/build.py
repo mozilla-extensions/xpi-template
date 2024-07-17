@@ -47,6 +47,8 @@ def tasks_from_manifest(config, jobs):
                 }
             )
             task["worker"]["docker-image"]["indexed"] = xpi_config["docker-image"]
+            # Add the docker image to the extra properties for the linter task.
+            task["extra"]["docker-image"] = xpi_config["docker-image"]
             if xpi_config.get("install-type"):
                 env["XPI_INSTALL_TYPE"] = xpi_config["install-type"]
 

@@ -45,4 +45,7 @@ def run_addons_linter(config, tasks):
         run = task["run"]
         run["command"] = run["command"].format(xpi_file=xpi_file)
 
+        # Allow to override the docker image.
+        task["worker"]["docker-image"]["indexed"] = dep.task["extra"]["docker-image"]
+
         yield task
