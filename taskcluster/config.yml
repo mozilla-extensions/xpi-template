@@ -6,6 +6,7 @@ task-priority: lowest
 taskgraph:
     register: xpi_taskgraph:register
     decision-parameters: 'xpi_taskgraph.parameters:get_decision_parameters'
+    cache-pull-requests: false
     repositories:
         xpi:
             name: "XPI source"

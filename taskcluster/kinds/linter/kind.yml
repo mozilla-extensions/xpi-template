@@ -10,7 +10,7 @@ kind-dependencies:
 
 transforms:
     - xpi_taskgraph.linter:transforms
-    - taskgraph.transforms.job:transforms
+    - taskgraph.transforms.run:transforms
     - taskgraph.transforms.task:transforms
 
 task-template:
