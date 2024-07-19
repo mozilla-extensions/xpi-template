@@ -4,6 +4,7 @@
 
 
 from copy import deepcopy
+from functools import lru_cache
 import json
 import os
 import pprint
@@ -14,7 +15,6 @@ from datetime import datetime
 from taskgraph.config import load_graph_config
 from taskgraph.util.schema import validate_schema
 from taskgraph.util import yaml
-from taskgraph.util.memoize import memoize
 from taskgraph.util.readonlydict import ReadOnlyDict
 from voluptuous import ALLOW_EXTRA, Optional, Required, Schema, Any
 
@@ -25,6 +25,12 @@ TEST_NAME_REGEX_STRING = r"""[^a-zA-Z0-9:_-]"""
 TEST_NAME_REGEX = re.compile(TEST_NAME_REGEX_STRING)
 
 
+class HashableReadOnlyDict(ReadOnlyDict):
+    def __hash__(self):
+        return hash(tuple(self.items()))
+
+
+@lru_cache(maxsize=None)
 def check_manifest(manifest_list):
     messages = []
     xpi_names = {}
@@ -52,7 +58,7 @@ def check_manifest(manifest_list):
         )
 
 
-@memoize
+@lru_cache(maxsize=None)
 def get_manifest():
     manifest_list = []
     for dir_name, subdir_list, file_list in os.walk(BASE_DIR):
@@ -84,6 +90,7 @@ def get_manifest():
             for target in package_json.get("scripts", {}):
                 if target.startswith("test") or target == "lint":
                     manifest["tests"].append(target)
+            manifest["tests"] = tuple(manifest["tests"])
             manifest["name"] = package_json["name"].lower()
             manifest[
                 "docker-image"
@@ -93,8 +100,8 @@ def get_manifest():
                     "xpi.cache.level-3.docker-images.v2.%s.latest"
                     % package_json["docker-image"]
                 )
-            manifest_list.append(ReadOnlyDict(manifest))
-    check_manifest(manifest_list[:])
+            manifest_list.append(HashableReadOnlyDict(manifest))
+    check_manifest(tuple(manifest_list))
     return tuple(manifest_list)
 
 
