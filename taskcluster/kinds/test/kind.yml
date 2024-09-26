@@ -17,7 +17,7 @@ task-defaults:
     worker:
         max-run-time: 7200
         docker-image:
-            indexed: xpi.cache.level-3.docker-images.v2.node-16.latest
+            indexed: xpi.cache.level-3.docker-images.v2.node-20.latest
         volumes:
             - /builds/worker/checkouts
             - /builds/worker/.cache
