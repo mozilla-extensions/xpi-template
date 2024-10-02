@@ -94,7 +94,7 @@ def get_manifest():
             manifest["name"] = package_json["name"].lower()
             manifest[
                 "docker-image"
-            ] = "xpi.cache.level-3.docker-images.v2.node-16.latest"
+            ] = "xpi.cache.level-3.docker-images.v2.node-20.latest"
             if "docker-image" in package_json:
                 manifest["docker-image"] = (
                     "xpi.cache.level-3.docker-images.v2.%s.latest"
