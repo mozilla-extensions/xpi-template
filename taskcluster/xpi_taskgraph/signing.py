@@ -17,11 +17,11 @@ from taskgraph.util.keyed_by import evaluate_keyed_by
 transforms = TransformSequence()
 
 FORMATS = {
-    "mozillaonline-privileged": "privileged_webextension",
+    "mozillaonline-privileged": "gcp_prod_privileged_webextension",
     # normandy-privileged is deprecated
-    "normandy-privileged": "privileged_webextension",
-    "privileged": "privileged_webextension",
-    "system": "system_addon",
+    "normandy-privileged": "gcp_prod_privileged_webextension",
+    "privileged": "gcp_prod_privileged_webextension",
+    "system": "gcp_prod_system_addon",
 }
 
 
